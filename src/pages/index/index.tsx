@@ -9,6 +9,8 @@ import { appBroadCast, EBroadCast } from '../../helper/BroadCast';
 import { EStore } from '../../store';
 import AppStore from '../../store/app';
 
+import Banner from '../../components/banner'
+
 type PageStateProps = {
   counterStore: {
     counter: number,
@@ -88,6 +90,7 @@ class Index extends Component {
     const { value: appStoreValue } = appStore;
     return (
       <View className='index'>
+        <Banner images={['https://taro.jd.com/static/images/book.png']} />
         <Button onClick={this.increment}>+</Button>
         <Button onClick={this.decrement}>-</Button>
         <Button onClick={this.incrementAsync}>Add Async</Button>
@@ -97,6 +100,7 @@ class Index extends Component {
         
 
         <Button onClick={this.onBrowseClick}>打开浏览器</Button>
+        
       </View>
     )
   }
