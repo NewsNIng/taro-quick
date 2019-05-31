@@ -1,3 +1,18 @@
+const npmConfigArgv = process.env.npm_config_argv;
+const outputDirs =  ["weapp", "alipay", "h5"];
+
+const findRunNowDir = (typeName) => {
+  return npmConfigArgv.indexOf(typeName) > 0;
+}
+
+let outputRoot = 'dist';
+// for(let i = 0; i < outputDirs.length; i++) {
+//   if(findRunNowDir(outputDirs[i])) {
+//     outputRoot = outputRoot + '_' + outputDirs[i];
+//     break;
+//   }
+// }
+
 const config = {
   projectName: 'taro-quick2',
   date: '2019-5-31',
@@ -8,7 +23,7 @@ const config = {
     '828': 1.81 / 2
   },
   sourceRoot: 'src',
-  outputRoot: 'dist',
+  outputRoot: outputRoot,
   plugins: {
     babel: {
       sourceMap: true,
@@ -65,7 +80,11 @@ const config = {
           }
         }
       }
-    }
+    },
+    // 开启小程序wxml压缩
+    compile: {
+      compressTemplate: true,
+    },
   },
   h5: {
     publicPath: '/',
@@ -95,8 +114,9 @@ const config = {
 }
 
 module.exports = function (merge) {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' || process.env.BUILD_ENV === 'development') {
     return merge({}, config, require('./dev'))
   }
   return merge({}, config, require('./prod'))
 }
+
