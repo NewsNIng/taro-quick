@@ -2,10 +2,11 @@ import { ComponentType } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { observer, inject } from '@tarojs/mobx'
-import { EStore } from '../../store';
+import store, { EStore, getStore } from '../../store';
 
 import './index.less'
-import UserStore from 'src/store/user';
+import UserStore from '../../store/user';
+import { appBroadCast, EBroadCast } from '../../helper/BroadCast';
 
 interface IProps {
   userStore: UserStore;
@@ -48,6 +49,25 @@ class Index extends Component<IProps> {
 
   }
 
+  public sendBroadCast = () => {
+    // 向index发送全局事件
+    appBroadCast.emit(EBroadCast.TEST, {
+      value: `i'm person ${+new Date()}`,
+    })
+    Taro.showToast({
+      title: "主页的value已经变化",
+      icon: 'none'
+    })
+  }
+
+  public sendMobx = () => {
+    getStore().appStore.setValue(`i'm person mobx ${+new Date()}`,)
+    Taro.showToast({
+      title: "主页的mobx value已经变化",
+      icon: 'none'
+    })
+  }
+
   render () {
     const { name } = this.props.userStore;
     
@@ -56,6 +76,11 @@ class Index extends Component<IProps> {
         <Text>hello {name}</Text>
         <Button onClick={this.onChangeUserNameClick}>修改名字</Button>
         <Button onClick={this.onAsyncChangeUserNameClick}>异步修改名字</Button>
+        <View>
+          <Text>（跨组件、跨页面）事件通知</Text>
+        </View>
+        <Button onClick={this.sendBroadCast}>通过Event触发全局事件</Button>
+        <Button onClick={this.sendMobx}>通过Mobx触发全局事件</Button>
       </View>
     )
   }
