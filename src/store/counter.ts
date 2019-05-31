@@ -1,3 +1,5 @@
+// 这是官方的mobx例子
+
 import { observable } from 'mobx'
 
 const counterStore = observable({

@@ -4,6 +4,12 @@ import { View, Button, Text } from '@tarojs/components'
 import { observer, inject } from '@tarojs/mobx'
 
 import './index.less'
+import { gennerateQueryUrlPath } from '../../helper/Url';
+import { appBroadCast, EBroadCast } from '../../helper/BroadCast';
+import { EStore } from '../../store';
+import AppStore from '../../store/app';
+
+import Banner from '../../components/banner'
 
 type PageStateProps = {
   counterStore: {
@@ -11,14 +17,15 @@ type PageStateProps = {
     increment: Function,
     decrement: Function,
     incrementAsync: Function
-  }
+  },
+  appStore: AppStore
 }
 
 interface Index {
   props: PageStateProps;
 }
 
-@inject('counterStore')
+@inject('counterStore', EStore.appStore)
 @observer
 class Index extends Component {
 
@@ -33,19 +40,25 @@ class Index extends Component {
     navigationBarTitleText: '首页'
   }
 
+  state = {
+    value: 'default',
+  }
+
   componentWillMount () { }
 
   componentWillReact () {
     console.log('componentWillReact')
   }
 
-  componentDidMount () { }
+  componentDidMount () {
+    // 监听事件
+    appBroadCast.on(EBroadCast.TEST, data => {
+      this.setState({
+        value: data.value,
+      });
+    })
+  }
 
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
 
   increment = () => {
     const { counterStore } = this.props
@@ -62,14 +75,32 @@ class Index extends Component {
     counterStore.incrementAsync()
   }
 
+  public onBrowseClick = () => {
+    Taro.navigateTo({
+      url: gennerateQueryUrlPath('/pages/browse/index', {
+        url: 'https://taro-club.jd.com/',
+        title: ' '
+      })
+    })
+  }
+
   render () {
-    const { counterStore: { counter } } = this.props
+    const { counterStore: { counter }, appStore } = this.props
+    const { value } = this.state;
+    const { value: appStoreValue } = appStore;
     return (
       <View className='index'>
+        <Banner images={['https://taro.jd.com/static/images/book.png']} />
         <Button onClick={this.increment}>+</Button>
         <Button onClick={this.decrement}>-</Button>
         <Button onClick={this.incrementAsync}>Add Async</Button>
         <Text>{counter}</Text>
+        <View><Text>event value: {value}</Text></View>
+        <View><Text>mobx value: {appStoreValue}</Text></View>
+        
+
+        <Button onClick={this.onBrowseClick}>打开浏览器</Button>
+        
       </View>
     )
   }
