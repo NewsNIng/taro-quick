@@ -7,9 +7,9 @@ interface IProps {
   title: string;
 }
 
-export class Browse extends Taro.Component<IProps> {
+export class Browse extends Taro.PureComponent<IProps> {
   config: Config = {
-    navigationBarTitleText: "页面详情",
+    navigationBarTitleText: "...",
     enablePullDownRefresh: false,
     navigationBarTextStyle: "black",
     backgroundColor: "#f7f7f7",
@@ -20,7 +20,7 @@ export class Browse extends Taro.Component<IProps> {
   private onWebViewMessage() {}
 
   private onWebViewLoad(e) {
-    console.log(e);
+    // console.log(e);
   }
 
   private setTitle(title: string) {
