@@ -1,0 +1,19 @@
+.swiper {
+    width: 375px;
+    // height: 210px;
+    height: 252px;
+    &-item { 
+        width: 375px;
+        // height: 210px;
+        height: 252px;
+        &__image {
+            width: 375px;
+            // height: 210px;
+            height: 252px;
+        }
+    }
+}
+
+.null {
+    background-color: #e5e5e5;
+}
