@@ -14,7 +14,7 @@ interface IProps {
 
 @inject(EStore.userStore)
 @observer
-class Index extends Component<IProps> {
+class Person extends Component<IProps> {
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -86,4 +86,4 @@ class Index extends Component<IProps> {
   }
 }
 
-export default Index  as ComponentType
+export default Person  as ComponentType
