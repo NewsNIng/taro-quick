@@ -2,6 +2,7 @@
 // 推荐使用这种 更直观
 
 import { observable, action } from 'mobx'
+import { API } from 'src/api';
 
 export default class UserStore {
     @observable public name: string;
@@ -23,6 +24,14 @@ export default class UserStore {
                 this.name = 'async world'
                 re(true);
             }), 1000);
+        });
+    }
+
+    // 测试登录接口
+    @action public async login(tel: string, code: string) {
+        const { data } = await API.user.login({
+            tel,
+            code,
         });
     }
 }

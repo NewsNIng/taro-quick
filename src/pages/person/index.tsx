@@ -68,6 +68,10 @@ class Person extends Component<IProps> {
     })
   }
 
+  public loginClick = () => {
+    this.props.userStore.login('13300002222','1234');
+  }
+
   render () {
     const { name } = this.props.userStore;
     
@@ -81,6 +85,7 @@ class Person extends Component<IProps> {
         </View>
         <Button onClick={this.sendBroadCast}>通过Event触发全局事件</Button>
         <Button onClick={this.sendMobx}>通过Mobx触发全局事件</Button>
+        <Button onClick={this.loginClick}>测试登录API调用</Button>
       </View>
     )
   }

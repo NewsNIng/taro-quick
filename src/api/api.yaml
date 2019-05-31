@@ -1,0 +1,142 @@
+openapi: 3.0.0
+servers:
+  - url: 'https://api.xxx.tech/'
+  - url: 'http://localhost/'
+info:
+  description: >-
+    你可以通过这里来了解 [OpenAPI 的语法](https://swagger.io/docs/specification/about/)。还可以通过
+    [Best Practices in API
+    Design](https://swagger.io/resources/articles/best-practices-in-api-design/)
+    了解设计 API 的最佳实践。     For this sample, you can use the api key `special-key`
+    to test the authorization     filters.
+  version: 0.0.1
+  title: API Mini
+  contact:
+    email: nxw@1995.com
+tags:
+  - name: user
+    description: 用户服务
+security:
+  - UserTokenAuth: []
+paths:
+  /login:
+    post:
+      operationId: login
+      tags:
+        - user
+      summary: 用户登录
+      responses:
+        '200':
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    description: 用户数据
+                    type: object
+                    properties:
+                      userToken:
+                        type: string
+                      userInfo:
+                        type: object
+                        $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/NoPermission'
+        default:
+          $ref: '#/components/responses/DefaultError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tel:
+                  type: string
+                  description: 手机号
+                code:
+                  type: string
+                  description: 验证码
+              required:
+                - tel
+                - code
+components:
+  securitySchemes:
+    UserTokenAuth:
+      type: apiKey
+      in: header
+      name: userToken
+  responses:
+    OkResponse:
+      description: 执行成功且不需要数据
+      content:
+        application/json:
+          schema:
+            '$ref': '#/components/schemas/EmptyResult'
+          example:
+            data: true
+    BadRequest:
+      description: >-
+        The server cannot or will not process the request
+        due to something that is perceived to be a client error
+        (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+      content:
+        application/json:
+          schema:
+            '$ref': '#/components/schemas/Error'
+          example:
+            httpCode: 400
+    Unauthorized:
+      description: 用户未授权，一般指用户未登录，或登陆已过期。
+      content:
+        application/json:
+          schema:
+            '$ref': '#/components/schemas/Error'
+          example:
+            httpCode: 401
+    NoPermission:
+      description: 无权限访问
+      content:
+        application/json:
+          schema:
+            '$ref': '#/components/schemas/Error'
+          example:
+            httpCode: 403
+    NotFound:
+      description: 资源不存在
+      content:
+        application/json:
+          schema:
+            '$ref': '#/components/schemas/Error'
+          example:
+            httpCode: 404
+    ServerError:
+      description: 服务器错误
+      content:
+        application/json:
+          schema:
+            '$ref': '#/components/schemas/Error'
+          example:
+            httpCode: 500
+    DefaultError:
+      description: 默认错误类型
+      content:
+        application/json:
+          schema:
+            '$ref': '#/components/schemas/Error'
+  schemas:
+    User:
+      type: object
+      description: 用户结构
+      properties:
+        id:
+          type: string
+          description: 用户id
+        name:
+          type: string
+          description: 昵称
+        mobile:
+          type: string
+          description: 手机号
