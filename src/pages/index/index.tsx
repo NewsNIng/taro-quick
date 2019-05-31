@@ -4,6 +4,7 @@ import { View, Button, Text } from '@tarojs/components'
 import { observer, inject } from '@tarojs/mobx'
 
 import './index.less'
+import { gennerateQueryUrlPath } from '../../helper/Url';
 
 type PageStateProps = {
   counterStore: {
@@ -62,6 +63,15 @@ class Index extends Component {
     counterStore.incrementAsync()
   }
 
+  public onBrowseClick = () => {
+    Taro.navigateTo({
+      url: gennerateQueryUrlPath('/pages/browse/index', {
+        url: 'https://taro-club.jd.com/',
+        title: ' '
+      })
+    })
+  }
+
   render () {
     const { counterStore: { counter } } = this.props
     return (
@@ -70,6 +80,8 @@ class Index extends Component {
         <Button onClick={this.decrement}>-</Button>
         <Button onClick={this.incrementAsync}>Add Async</Button>
         <Text>{counter}</Text>
+
+        <Button onClick={this.onBrowseClick}>打开浏览器</Button>
       </View>
     )
   }
