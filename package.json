@@ -21,6 +21,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@tarojs/async-await": "1.2.22",
+    "babel-regenerator-runtime": "^6.5.0",
     "@tarojs/components": "1.2.22",
     "@tarojs/router": "1.2.22",
     "@tarojs/taro": "1.2.22",

@@ -1,3 +1,5 @@
+import '@tarojs/async-await'
+
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Provider } from '@tarojs/mobx'
 import Index from './pages/index'

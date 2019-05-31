@@ -1,10 +1,19 @@
 import { ComponentType } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
+import { observer, inject } from '@tarojs/mobx'
+import { EStore } from '../../store';
 
 import './index.less'
+import UserStore from 'src/store/user';
 
-class Index extends Component {
+interface IProps {
+  userStore: UserStore;
+}
+
+@inject(EStore.userStore)
+@observer
+class Index extends Component<IProps> {
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -17,25 +26,36 @@ class Index extends Component {
     navigationBarTitleText: '个人中心'
   }
 
-  componentWillMount () { }
-
-  componentWillReact () {
-    console.log('componentWillReact')
+  public onChangeUserNameClick = () => {
+    this.props.userStore.setName('newsning');
   }
 
-  componentDidMount () { }
+  public onAsyncChangeUserNameClick = async () => {
+    Taro.showLoading({
+      title: 'change...'
+    });
 
-  componentWillUnmount () { }
+    try {
+      const rs = await this.props.userStore.asyncSetName();
+      if(!rs) {
+        throw Error('async change name error')
+      }  
+    } catch (error) {
+      console.log(error)
+    }
+    
+    Taro.hideLoading();
 
-  componentDidShow () { }
-
-  componentDidHide () { }
+  }
 
   render () {
+    const { name } = this.props.userStore;
     
     return (
       <View className='person'>
-        <Text>person</Text>
+        <Text>hello {name}</Text>
+        <Button onClick={this.onChangeUserNameClick}>修改名字</Button>
+        <Button onClick={this.onAsyncChangeUserNameClick}>异步修改名字</Button>
       </View>
     )
   }
