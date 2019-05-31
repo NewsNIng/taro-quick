@@ -25,6 +25,9 @@ const config = {
     '750': 1/2,
     '375': 1, // 这里我使用375作为100% 有需要自行更改
   },
+  alias: {
+    'src': 'src',
+  },
   sourceRoot: 'src',
   outputRoot: outputRoot,
   plugins: {

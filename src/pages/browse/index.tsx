@@ -1,11 +1,12 @@
 import Taro, { Config } from "@tarojs/taro";
 import { WebView } from "@tarojs/components";
-import { getTaroRouterParams } from "../../helper/Url";
+import { getTaroRouterParams } from "src/helper/Url";
 
 interface IProps {
   url: string;
   title: string;
 }
+
 
 export class Browse extends Taro.PureComponent<IProps> {
   config: Config = {
